@@ -20,7 +20,7 @@ using namespace std;
 int main()
 {
 
-    string key = "ietgahrcqwjebokuymvhfxpdzs";
+    string key = "iltganrcqwjebokuymvhfxpdzs";
     string plainText = "";
     string cipherText = "";
 
@@ -41,9 +41,6 @@ int main()
         inFile.close();
     }
 
-    cout << "plain length: " << plainText.length() << endl;
-    cout << "cipher length: " << cipherText.length() << endl;
-
     /*
         Erase special characters, change uppercase to lowercase, 
         populate plain/ cipher text distribution table, and create cipher text.
@@ -63,19 +60,29 @@ int main()
         int c = plainText[i];
         if (isupper(c))
             plainText[i] = tolower(c);
-        
+   
+    }
+
+    /*
+        Creating the cipher text and populating the distribution tables
+    */
+    for (int i = 0; i < plainText.length(); i++)
+    {
+        // Create cipher text
+        int charIndex = plainText[i] - 97;
+        cipherText += key[charIndex];
+
+    }
+
+    for (int i = 0; i < plainText.length(); i++)
+    {
         // Populate plain text distribution table
         int charIndex = plainText[i] - 97;
         plainTextDistribution[charIndex]++;
 
-        // Create cipher text
-        char concat = key[charIndex];
-        cipherText += concat;
-
-        // Populatre cipher text distribution table
-        charIndex = cipherText[i] - 97;
-        cipherTextDistribution[charIndex]++;
-   
+        // Populate cipher text distribution table
+        char cipherCharIndex = cipherText[i] - 97;
+        cipherTextDistribution[cipherCharIndex]++;
     }
 
     /*
@@ -97,7 +104,7 @@ int main()
                                            / plainText.length()) * 100);
 
         cipherTextDistribution[i] = round((cipherTextDistribution[i]
-            / cipherText.length()) * 100);
+                                           / cipherText.length()) * 100);
     }
 
     /*
@@ -126,9 +133,6 @@ int main()
         }
         cout << endl;
     }
-
-    cout << "plain length: " << plainText.length() << endl;
-    cout << "cipher length: " << cipherText.length() << endl;
 
 }
 
