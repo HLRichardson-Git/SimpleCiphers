@@ -1,71 +1,134 @@
+/*
+
+    Written by: Hunter Richardson
+    Last updated: October 29th 2022
+    
+    Takes a file of plaintext and encrypts with static key and creates a 
+    frequency table then outputs to a output file.
+
+*/
+
 #include <iostream>
+#include <fstream>
 #include <string>
-#include <bits/stdc++.h> 
-#include<algorithm>
+
+#include <cmath>
+#include <cstring>
 
 using namespace std;
 
 int main()
 {
 
-    string substitute = "";
-    int stringSize = 0;
-    bool check = false;
-
-    do
-    {
-        cout << "Enter word without dupliate letters: "; cin >> substitute;
-        stringSize = substitute.size();
-
-        cin.ignore();
-
-        check = false;
-        for (int i = 0; i < stringSize; i++)
-        {
-            for (int j = i + 1; j < stringSize; j++)
-            {
-                if (substitute[i] == substitute[j] && substitute[i] != '0') check = true;
-            }
-        }
-    } while (check == true);
-
-    string alphabet = "abcdefghijklmnopqrstuvwxyz";
-    string cipherAlphabet = "abcdefghijklmnopqrstuvwxyz";
-    char subArray[26];
-    char cipherArray[26];
-
-    for (int i = 0; i < stringSize; i++)
-    {
-        for (int j = 0; j < 26; j++)
-        {
-            if (substitute[i] == alphabet[j]) cipherAlphabet.erase(remove(cipherAlphabet.begin(), cipherAlphabet.end(), substitute[i]), cipherAlphabet.end());
-        }
-    }
-
-    cipherAlphabet = substitute + cipherAlphabet;
-    cout << cipherAlphabet << endl;
-
+    string key = "ietgahrcqwjebokuymvhfxpdzs";
+    string plainText = "";
     string cipherText = "";
-    cout << "Enter cipher text: "; getline(cin, cipherText);
-    int cipherSize = cipherText.size();
 
-    string encryptedText = "";
-    
-    for (int i = 0; i < cipherSize; i++)
+    float plainTextDistribution[26] = { 0 };
+    float cipherTextDistribution[26] = { 0 };
+
+    /*
+        Open input file
+    */
+    ifstream inFile("input.txt");
+    if (inFile.is_open())
     {
-        for (int j = 0; j < 26; j++)
+        string temp = "";
+        while (getline(inFile, temp))
         {
-            if (cipherText[i] == ' ')
-            {
-                encryptedText = encryptedText + ' '; 
-                break;
-            }
-
-            if (cipherText[i] == alphabet[j]) encryptedText = encryptedText + cipherAlphabet[j];
+            plainText = plainText + temp;
         }
+        inFile.close();
     }
 
-    cout << "Encrypted text: " << encryptedText << endl;
+    cout << "plain length: " << plainText.length() << endl;
+    cout << "cipher length: " << cipherText.length() << endl;
 
+    /*
+        Erase special characters, change uppercase to lowercase, 
+        populate plain/ cipher text distribution table, and create cipher text.
+    */
+    for (int i = 0; i < plainText.length(); i++)
+    {
+
+        // Erase special characters
+        if (plainText[i] < 'A' || plainText[i] > 'Z' &&
+            plainText[i] < 'a' || plainText[i] > 'z')
+        {
+            plainText.erase(i, 1);
+            i--;
+        }
+
+        // Change uppercase to lowercase
+        int c = plainText[i];
+        if (isupper(c))
+            plainText[i] = tolower(c);
+        
+        // Populate plain text distribution table
+        int charIndex = plainText[i] - 97;
+        plainTextDistribution[charIndex]++;
+
+        // Create cipher text
+        char concat = key[charIndex];
+        cipherText += concat;
+
+        // Populatre cipher text distribution table
+        charIndex = cipherText[i] - 97;
+        cipherTextDistribution[charIndex]++;
+   
+    }
+
+    /*
+        Open and write to output file.
+    */
+    ofstream outFile;
+    outFile.open("output.txt");
+    outFile << cipherText;
+    outFile.close();
+
+
+    /*
+        Average the distribution table.
+    */
+    for (int i = 0; i < 26; i++)
+    {
+        // Calculate percentage
+        plainTextDistribution[i] = round((plainTextDistribution[i] 
+                                           / plainText.length()) * 100);
+
+        cipherTextDistribution[i] = round((cipherTextDistribution[i]
+            / cipherText.length()) * 100);
+    }
+
+    /*
+        Display the distribution.
+    */
+    cout << "Plain Text distribution: " << endl;
+    for (int i = 0; i < 26; i++)
+    {
+        char letter = i + 97;
+        cout << letter << " : ";
+        for (int j = 0; j < plainTextDistribution[i]; j++)
+        {
+            cout << "[]";
+        }
+        cout << endl;
+    }
+
+    cout << "\nCipher Text distribution: " << endl;
+    for (int i = 0; i < 26; i++)
+    {
+        char letter = i + 97;
+        cout << letter << " : ";
+        for (int j = 0; j < cipherTextDistribution[i]; j++)
+        {
+            cout << "[]";
+        }
+        cout << endl;
+    }
+
+    cout << "plain length: " << plainText.length() << endl;
+    cout << "cipher length: " << cipherText.length() << endl;
 
 }
+
