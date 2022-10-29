@@ -2,8 +2,8 @@
 
     Written by: Hunter Richardson
     Last updated: October 29th 2022
-    
-    Takes a file of plaintext and encrypts with static key and creates a 
+
+    Takes a file of plaintext and encrypts with static key and creates a
     frequency table then outputs to a output file.
 
 */
@@ -42,7 +42,7 @@ int main()
     }
 
     /*
-        Erase special characters, change uppercase to lowercase, 
+        Erase special characters, change uppercase to lowercase,
         populate plain/ cipher text distribution table, and create cipher text.
     */
     for (int i = 0; i < plainText.length(); i++)
@@ -60,7 +60,7 @@ int main()
         int c = plainText[i];
         if (isupper(c))
             plainText[i] = tolower(c);
-   
+
     }
 
     /*
@@ -100,11 +100,11 @@ int main()
     for (int i = 0; i < 26; i++)
     {
         // Calculate percentage
-        plainTextDistribution[i] = round((plainTextDistribution[i] 
-                                           / plainText.length()) * 100);
+        plainTextDistribution[i] = round((plainTextDistribution[i]
+            / plainText.length()) * 100);
 
         cipherTextDistribution[i] = round((cipherTextDistribution[i]
-                                           / cipherText.length()) * 100);
+            / cipherText.length()) * 100);
     }
 
     /*
