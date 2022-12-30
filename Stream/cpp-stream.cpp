@@ -10,6 +10,7 @@ int main()
     cout << "Wow I am eve coding on a break" << endl;
     cout << "This is to make me look like I am a active coder" << endl;
     cout << "Gotta make that green more green you know" << endl;
+    cout << "Eat your heart out, or dont idk what that means" << endl;
 }
 
 
