@@ -49,7 +49,7 @@ int main()
         stringSize = cipherDecrypt.size();
 
         //cin.ignore();
-
+        string candidate = "";
         int answer = -1;
         cout << "Do you know the shift(Y=0/N=1)? "; cin >> answer;
 
@@ -61,15 +61,19 @@ int main()
             cout << "Enter shift amount: "; cin >> shift;
             shift = shift % 26;
 
-            for (int i = stringSize; i >= 0; i--)
+            candidate = "";
+
+            int shiftAmount;
+            for (int i = 0; i < stringSize; i++)
             {
+
                 if (cipherDecrypt[i] == 32)
-                    cipherDecrypt[i] = cipherDecrypt[i];
+                    candidate += cipherDecrypt[i];
                 else
-                    cipherDecrypt[i] = cipherDecrypt[i] - shift;
+                    candidate += ((cipherDecrypt[i] - 97 - shift + 26) % 26) + 97;
             }
 
-            cout << "Shifted text: " << cipherDecrypt << endl;
+            cout << "Shifted text: " << candidate << endl;
 
             break;
 
@@ -82,17 +86,17 @@ int main()
             while (shift <= 26)
             {
 
-                string decryptString = cipherDecrypt;
-                string candidate = "";
+                //string decryptString = cipherDecrypt;
+                candidate = "";
 
                 int shiftAmount;
                 for (int i = 0; i < stringSize; i++)
                 {
 
-                    if (decryptString[i] == 32)
-                        candidate += decryptString[i];
+                    if (cipherDecrypt[i] == 32)
+                        candidate += cipherDecrypt[i];
                     else
-                        candidate += ((decryptString[i] - 97 - shift + 26) % 26) + 97;
+                        candidate += ((cipherDecrypt[i] - 97 - shift + 26) % 26) + 97;
                 }
                 cout << "Decryopted cipher: " << candidate << " Shifted amount: " << shift << endl;
                 shift++;
