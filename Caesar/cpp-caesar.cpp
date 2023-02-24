@@ -1,3 +1,5 @@
+
+
 #include <iostream>
 #include <string>
 
@@ -81,16 +83,18 @@ int main()
             {
 
                 string decryptString = cipherDecrypt;
+                string candidate = "";
 
                 int shiftAmount;
                 for (int i = 0; i < stringSize; i++)
                 {
+
                     if (decryptString[i] == 32)
-                        decryptString[i] = decryptString[i];
+                        candidate += decryptString[i];
                     else
-                        decryptString[i] = decryptString[i] - shift;
+                        candidate += ((decryptString[i] - 97 - shift + 26) % 26) + 97;
                 }
-                cout << "Decryopted cipher: " << decryptString << " Shifted amount: " << shift << endl;
+                cout << "Decryopted cipher: " << candidate << " Shifted amount: " << shift << endl;
                 shift++;
             }
             break;
@@ -100,3 +104,4 @@ int main()
 
     }
 }
+
