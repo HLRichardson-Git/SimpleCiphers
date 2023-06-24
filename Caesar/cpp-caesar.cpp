@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <string>
 
@@ -18,11 +16,11 @@ int main()
     string cipherEncrypt = "";
     int stringSize = 0;
     int shift = 0;
-
+    string result = "";
     switch (choice)
     {
     case 0:
-        
+
         //string cipherEncrypt = "";
 
         cout << "Text to be encrypted: "; getline(cin, cipherEncrypt);
@@ -35,11 +33,13 @@ int main()
         for (int i = 0; i < stringSize; i++)
         {
             if (cipherEncrypt[i] == 32)
-                cipherEncrypt[i] = cipherEncrypt[i];
+                result += cipherEncrypt[i];
+            else if (isupper(cipherEncrypt[i]))
+                result += char(int(cipherEncrypt[i] + shift - 65) % 26 + 65);
             else
-                cipherEncrypt[i] = cipherEncrypt[i] + shift;
+                result += char(int(cipherEncrypt[i] + shift - 97) % 26 + 97);
         }
-        cout << "Shifted text: " << cipherEncrypt << endl;
+        cout << "Shifted text: " << result << endl;
         break;
 
     case 1:
@@ -69,8 +69,10 @@ int main()
 
                 if (cipherDecrypt[i] == 32)
                     candidate += cipherDecrypt[i];
+                else if (isupper(cipherDecrypt[i]))
+                    candidate += char((int(cipherDecrypt[i] - shift - 65) % 26 + 26) % 26 + 65);
                 else
-                    candidate += ((cipherDecrypt[i] - 97 - shift + 26) % 26) + 97;
+                    candidate += char((int(cipherDecrypt[i] - shift - 97) % 26 + 26) % 26 + 97);
             }
 
             cout << "Shifted text: " << candidate << endl;
@@ -95,8 +97,10 @@ int main()
 
                     if (cipherDecrypt[i] == 32)
                         candidate += cipherDecrypt[i];
+                    else if (isupper(cipherDecrypt[i]))
+                        candidate += char((int(cipherDecrypt[i] - shift - 65) % 26 + 26) % 26 + 65);
                     else
-                        candidate += ((cipherDecrypt[i] - 97 - shift + 26) % 26) + 97;
+                        candidate += char((int(cipherDecrypt[i] - shift - 97) % 26 + 26) % 26 + 97);
                 }
                 cout << "Decryopted cipher: " << candidate << " Shifted amount: " << shift << endl;
                 shift++;
@@ -108,4 +112,5 @@ int main()
 
     }
 }
+
 
